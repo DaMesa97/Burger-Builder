@@ -150,7 +150,7 @@ class BurgerBuilder extends Component {
          orderSummary = <Spiner />
       }
 
-      let burger = this.state.error ? <p>Ingredients can't be loaded!</p> : <Spiner />
+      let burger = this.state.error || !this.state.ingredients ? <p>Ingredients can't be loaded!</p> : <Spiner />
       if (this.state.ingredients) {
          burger = (<Aux><Burger ingredients={this.state.ingredients} />
             <BuildControls
