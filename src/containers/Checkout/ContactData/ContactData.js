@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 
 import Button from '../../../components/UI/Button/Button'
 import classes from './ContactData.module.css'
-import axios from 'axios'
+import axios from '../../../axios-orders'
 import Spinner from '../../../components/UI/Spiner/Spiner'
 
 class ContactData extends Component {
@@ -40,7 +40,7 @@ class ContactData extends Component {
          },
          deliveryMethod: 'fastest'
       }
-      axios.post('https://burger-react-app-2d06e.firebaseio.com/orders.json', order)
+      axios.post('orders.json', order)
          .then(response => {
             this.setState({ loading: false });
             this.props.history.replace('/')
