@@ -89,10 +89,15 @@ class BurgerBuilder extends Component {
       //    .catch(error => {
       //       this.setState({ loading: false, purchasing: false })
       //    })
-      this.props.history.push({
-         pathname: '/checkout',
-         state: this.state.ingredients
-      })
+      if (this.state.ingredients) {
+         this.props.history.push({
+            pathname: '/checkout',
+            state: {
+               ingredients: this.state.ingredients,
+               price: this.state.totalPrice
+            }
+         })
+      }
    }
 
    addIngredientHandler = (type) => {
@@ -154,7 +159,8 @@ class BurgerBuilder extends Component {
          orderSummary = <Spiner />
       }
 
-      let burger = this.state.error || !this.state.ingredients ? <p>Ingredients can't be loaded!</p> : <Spiner />
+      let burger = this.state.error ? <p>Ingredients can't be loaded!</p> : <Spiner />
+
       if (this.state.ingredients) {
          burger = (<Aux><Burger ingredients={this.state.ingredients} />
             <BuildControls
