@@ -35,6 +35,7 @@ class BurgerBuilder extends Component {
          .catch(error => {
             this.setState({ error: true })
          })
+      console.log(this.props)
    }
 
    updatePurchaseState = (ingredients) => {
@@ -63,32 +64,35 @@ class BurgerBuilder extends Component {
    }
 
    purchaseContinueHandler = () => {
-      // alert('You continue!')
-      this.setState({
-         loading: true
+      // this.setState({
+      //    loading: true
+      // })
+      // const order = {
+      //    ingredients: this.state.ingredients,
+      //    price: this.state.totalPrice,
+      //    customer: {
+      //       name: 'Tymoteusz Weglorz',
+      //       adress: {
+      //          city: 'Edinburgh',
+      //          street: 'Picardy Place 16-22',
+      //          postCode: 'EH1 3JT',
+      //          country: 'Scotland'
+      //       },
+      //       email: 'test@test.com',
+      //    },
+      //    deliveryMethod: 'fastest'
+      // }
+      // axios.post('/orders.json', order)
+      //    .then(response => {
+      //       this.setState({ loading: false, purchasing: false })
+      //    })
+      //    .catch(error => {
+      //       this.setState({ loading: false, purchasing: false })
+      //    })
+      this.props.history.push({
+         pathname: '/checkout',
+         state: this.state.ingredients
       })
-      const order = {
-         ingredients: this.state.ingredients,
-         price: this.state.totalPrice,
-         customer: {
-            name: 'Tymoteusz Weglorz',
-            adress: {
-               city: 'Edinburgh',
-               street: 'Picardy Place 16-22',
-               postCode: 'EH1 3JT',
-               country: 'Scotland'
-            },
-            email: 'test@test.com',
-         },
-         deliveryMethod: 'fastest'
-      }
-      axios.post('/orders.json', order)
-         .then(response => {
-            this.setState({ loading: false, purchasing: false })
-         })
-         .catch(error => {
-            this.setState({ loading: false, purchasing: false })
-         })
    }
 
    addIngredientHandler = (type) => {
