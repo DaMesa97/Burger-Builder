@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import { withRouter } from 'react-router-dom'
 
@@ -194,4 +195,9 @@ class ContactData extends Component {
    }
 }
 
-export default withRouter(ContactData)
+const mapStateToProps = (state) => ({
+   price: state.totalPrice
+})
+
+
+export default connect(mapStateToProps)(withRouter(ContactData))
