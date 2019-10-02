@@ -77,7 +77,8 @@ class BurgerBuilder extends Component {
                disabled={disabledInfo}
                price={this.props.totalPrice}
                purchaseable={this.updatePurchaseState(this.props.ingredients)}
-               ordered={this.purchaseHandler} />
+               ordered={this.purchaseHandler}
+               isAuth={this.props.isAuth} />
          </Aux>)
       }
       return (
@@ -95,7 +96,8 @@ class BurgerBuilder extends Component {
 const mapStateToProps = (state) => ({
    ingredients: state.burgerBuilder.ingredients,
    totalPrice: state.burgerBuilder.totalPrice,
-   error: state.burgerBuilder.error
+   error: state.burgerBuilder.error,
+   isAuth: state.auth.token !== null
 })
 
 const mapDispatchToProps = dispatch => {

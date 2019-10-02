@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux'
 import * as actions from '../../store/actions/index'
+import { Redirect } from 'react-router-dom'
 
 import Input from '../../components/UI/Input/Input'
 import Button from '../../components/UI/Button/Button'
 import classes from './Authentication.module.css'
+import Spinner from '../../components/UI/Spiner/Spiner'
 
 class Authentication extends Component {
    state = {
@@ -82,6 +84,8 @@ class Authentication extends Component {
    submitHandler = (e) => {
       e.preventDefault();
       this.props.onAuth(this.state.authForm.email.value, this.state.authForm.password.value, this.state.isSignUp)
+      console.log(this.props)
+      // this.props.history.replace('/')
    }
 
    switchAuthModeHandler = () => {
@@ -99,7 +103,7 @@ class Authentication extends Component {
          })
       }
 
-      const form = formElementsArray.map(el => (
+      let form = formElementsArray.map(el => (
          < Input
             elementType={el.config.elementType}
             elementConfig={el.config.elementConfig}
@@ -111,8 +115,35 @@ class Authentication extends Component {
             changed={(e) => this.inputChangedHandler(e, el.id)}
          />
       ))
+
+      if (this.props.loading) {
+         form = < Spinner />
+      }
+
+      let errorMessage = null;
+
+      if (this.props.error) {
+         switch (this.props.error.message) {
+            case 'EMAIL_EXISTS':
+               errorMessage = 'Email adress already registered!'
+               break
+            case 'EMAIL_NOT_FOUND':
+               errorMessage = 'Wrong email adress!'
+               break
+            case 'INVALID_PASSWORD':
+               errorMessage = 'Wrong password!'
+         }
+      }
+
+      let authRedirect = null
+      if (this.props.isAuth) {
+         authRedirect = < Redirect to="/" />
+      }
+
       return (
          <div className={classes.Authentication}>
+            {authRedirect}
+            {errorMessage}
             <form onSubmit={this.submitHandler}>
                {form}
                <Button btnType='Success'>{this.state.isSignUp ? 'Sign in!' : 'Sign up!'}</Button>
@@ -124,11 +155,13 @@ class Authentication extends Component {
 }
 
 const mapStateToProps = state => ({
-
+   loading: state.auth.loading,
+   error: state.auth.error,
+   isAuth: state.auth.token !== null
 })
 
 const mapDispatchToProps = dispatch => ({
    onAuth: (email, password, isSingedUp) => dispatch(actions.auth(email, password, isSingedUp))
 })
 
-export default connect(null, mapDispatchToProps)(Authentication);
+export default connect(mapStateToProps, mapDispatchToProps)(Authentication);
