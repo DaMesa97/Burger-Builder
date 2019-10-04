@@ -84,8 +84,6 @@ class Authentication extends Component {
    submitHandler = (e) => {
       e.preventDefault();
       this.props.onAuth(this.state.authForm.email.value, this.state.authForm.password.value, this.state.isSignUp)
-      console.log(this.props)
-      // this.props.history.replace('/')
    }
 
    switchAuthModeHandler = () => {
@@ -137,7 +135,11 @@ class Authentication extends Component {
 
       let authRedirect = null
       if (this.props.isAuth) {
-         authRedirect = < Redirect to="/" />
+         if (this.props.building) {
+            authRedirect = < Redirect to="/checkout" />
+         }
+         else
+            authRedirect = < Redirect to="/" />
       }
 
       return (
@@ -157,7 +159,8 @@ class Authentication extends Component {
 const mapStateToProps = state => ({
    loading: state.auth.loading,
    error: state.auth.error,
-   isAuth: state.auth.token !== null
+   isAuth: state.auth.token !== null,
+   building: state.burgerBuilder.building
 })
 
 const mapDispatchToProps = dispatch => ({
